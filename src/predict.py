@@ -43,7 +43,7 @@ try:
 except ImportError:
     joblib = None
 
-from utils.sanity import require_numeric, check_no_nan_inf, sanity_predictions
+from src.utils.sanity import require_numeric, check_no_nan_inf, sanity_predictions
 
 def _latest_final_version(final_root: Path, mass: int) -> Optional[int]:
     # dirs look like: sig200_v1, sig200_v2, ...
