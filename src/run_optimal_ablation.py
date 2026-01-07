@@ -45,8 +45,6 @@ def main():
 
     # Define Paths
     csv_path = Path(args.csvdir) / f"sig{args.mass}" / f"{args.mode}_summary.csv"
-    train_script = "src/train_bdt.py"
-    plot_script = "src/plot_bdt_diagnostics.py"
     output_dir = Path(args.outdir)
     output_dir.mkdir(parents=True, exist_ok=True)
 
@@ -104,7 +102,7 @@ def main():
     # 4. Construct Command
     # We include --outdir and the list of features to drop
     cmd = [
-        sys.executable, train_script,
+        sys.executable, "-m", "src.train_bdt",
         "--mass", str(args.mass),
         "--outdir", output_dir
     ]
@@ -123,7 +121,7 @@ def main():
 
     # 5. Plot
     bdtplot = [
-        sys.executable, plot_script,
+        sys.executable, "-m", "src.plot_bdt_diagnostics",
         "--modeldir", output_dir,
         "--mass", str(args.mass),
     ]
