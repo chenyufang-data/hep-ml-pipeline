@@ -1,0 +1,25 @@
+name: hep-ml
+channels:
+  - conda-forge
+
+dependencies:
+  - python=3.11
+  - numpy
+  - pandas
+  - scipy
+  - pyyaml
+  - uproot
+  - awkward
+  - numba
+  - tqdm
+  - matplotlib
+  - vector
+  - scikit-learn
+  - xgboost=3.1.2
+  - pyarrow
+  - shap=0.50.0
+  - joblib
+  - pip
+  - pip:
+      - pytest
+      - ruff
