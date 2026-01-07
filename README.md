@@ -1,4 +1,4 @@
-# BDT-based Signal–Background Classification for HEP (XGBoost Pipeline)
+# Signal–Background Classification Pipeline with XGBoost (High Energy Physics Case Study)
 
 This repository implements an end-to-end, reproducible pipeline for **signal vs background classification** in high-energy physics using **XGBoost (BDT)**.
 
