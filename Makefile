@@ -24,11 +24,16 @@ smoke: clean
 	@echo ">>> CI smoke run (CONFIG=$(CONFIG), MASS=$(MASS))"
 	$(PY) -m src.make_dataset --config $(CONFIG)
 	$(PY) -m src.prepare_ml --write-splits
-	$(PY) -m src.train_bdt --mass $(MASS)
-	@echo ">>> predict (use working model dir: $(MODEL_DIR))"
-	$(PY) -m src.predict --model-dir ml_models --mass $(MASS) --input $(SPLITS_DIR)/test_sig$(MASS).parquet --split test
+	@echo ">>> train at working model dir: $(WORK_DIR)"
+	$(PY) -m src.train_bdt --mass $(MASS) --outdir $(WORK_DIR)
+	@echo ">>> generate figures"
+	$(PY) -m src/plot_bdt_diagnostics --mass $(MASS) --modeldir $(WORK_DIR)
+	@echo ">>> freeze model"
+	$(PY) -m src/freeze_final --mass $(MASS)
+	@echo ">>> predict"
+	$(PY) -m src.predict --mass $(MASS) --input $(SPLITS_DIR)/test_sig$(MASS).parquet --split test
 	@echo ">>> summarize (use working model dir: $(MODEL_DIR))"
-	$(PY) -m src.summarize_inference --model-dir ml_models --mass $(MASS)
+	$(PY) -m src.summarize_inference --mass $(MASS)
 
 
 help:
@@ -114,5 +119,6 @@ clean:
 clean-all:
 	@echo ">>> Cleaning outputs ((keeping final releases))"
 	rm -rf ml_outputs root_outputs ml_models ml_ablation || true
+
 
 
