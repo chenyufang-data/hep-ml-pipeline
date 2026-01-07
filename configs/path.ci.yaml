@@ -1,0 +1,13 @@
+data_root: sampledata
+
+signal:
+  sig_200:
+    - sig_200.root
+
+background:
+  bbj:
+    - bkgbbj1.root
+  ccj:
+    - bkgccj1.root
+  bbc:
+    - bkgbbc1.root

@@ -1,0 +1,19 @@
+data_root: rawdata
+
+fallback_data_root: sampledata
+
+signal:
+  sig_200:
+    - sig_200.root
+
+background:
+  bbj:
+    - bkgbbj1.root
+    - bkgbbj2.root
+  ccj:
+    - bkgccj1.root
+    - bkgccj2.root
+    - bkgccj3.root
+    - bkgccj4.root
+  bbc:
+    - bkgbbc1.root
