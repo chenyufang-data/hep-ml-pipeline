@@ -1,0 +1,54 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    defaults:
+      run:
+        shell: bash -l {0}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up conda env (environment.yml)
+        uses: conda-incubator/setup-miniconda@v3
+        with:
+          environment-file: environment.yml
+          activate-environment: hep-ml
+          auto-activate-base: false
+          miniforge-variant: Mambaforge
+          use-mamba: true
+          cache-environment: true
+
+      - name: Show versions
+        run: |
+          python --version
+          python -c "import numpy, pandas; print('numpy', numpy.__version__); print('pandas', pandas.__version__)"
+          python -c "import xgboost; print('xgboost', xgboost.__version__)"
+
+      - name: Smoke run (Makefile CI target)
+        run: |
+          make ci
+
+      - name: Assert key artifacts exist
+        run: |
+          test -f ml_outputs/splits/test_sig200.parquet
+          test -f docs/reports/report_infer_test_sig200.latest.json
+          test -f docs/reports/report_infer_test_sig200.latest.md
+
+      - name: Upload reports
+        uses: actions/upload-artifact@v4
+        with:
+          name: ci-reports
+          path: |
+            docs/reports/*.md
+            docs/reports/*.json
+          if-no-files-found: error
