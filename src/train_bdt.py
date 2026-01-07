@@ -51,7 +51,7 @@ try:
 except ImportError as e:
     raise SystemExit("scikit-learn is required. Install: pip install scikit-learn") from e
 
-from utils.sanity import sanity_prepared_ml
+from src.utils.sanity import sanity_prepared_ml
 
 DEFAULT_FEATURES = [
     "ptb1", "etab1", "ptb2", "etab2",
