@@ -24,6 +24,7 @@ jobs:
           miniforge-variant: Miniforge3
           miniforge-version: latest
           use-mamba: true
+          conda-remove-defaults: true
           auto-activate-base: false
           environment-file: environment.yml
           activate-environment: hep-ml
