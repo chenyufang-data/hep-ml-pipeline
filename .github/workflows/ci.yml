@@ -24,7 +24,6 @@ jobs:
           miniforge-variant: Miniforge3
           miniforge-version: latest
           use-mamba: true
-          cache-environment: true
           auto-activate-base: false
           environment-file: environment.yml
           activate-environment: hep-ml
