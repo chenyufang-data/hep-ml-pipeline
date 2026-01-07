@@ -32,7 +32,7 @@ import pyarrow as pa
 import pyarrow.parquet as pq
 from tqdm import tqdm
 
-from utils.sanity import sanity_root_parquet, SanityError
+from src.utils.sanity import sanity_root_parquet, SanityError
 
 # Physics helpers (no extra deps)
 def _px_py_pz_e(pt, eta, phi, mass):
