@@ -21,12 +21,13 @@ jobs:
       - name: Set up conda env (environment.yml)
         uses: conda-incubator/setup-miniconda@v3
         with:
-          environment-file: environment.yml
-          activate-environment: hep-ml
-          auto-activate-base: false
-          miniforge-variant: Mambaforge
+          miniforge-variant: Miniforge3
+          miniforge-version: latest
           use-mamba: true
           cache-environment: true
+          auto-activate-base: false
+          environment-file: environment.yml
+          activate-environment: hep-ml
 
       - name: Show versions
         run: |
