@@ -22,11 +22,11 @@ all: data splits train ablation optimal freeze infer summarize
 
 smoke: clean
 	@echo ">>> CI smoke run (CONFIG=$(CONFIG), MASS=$(MASS))"
-	$(PY) src/make_dataset.py --config $(CONFIG)
-	$(PY) src/prepare_ml.py --write-splits
-	$(PY) src/train_bdt.py --mass $(MASS)
-	$(PY) src/predict.py --mass $(MASS) --input $(SPLITS_DIR)/test_sig$(MASS).parquet --split test
-	$(PY) src/summarize_inference.py --mass $(MASS)
+	$(PY) -m src.make_dataset --config $(CONFIG)
+	$(PY) -m src.prepare_ml --write-splits
+	$(PY) -m src.train_bdt --mass $(MASS)
+	$(PY) -m src.predict --mass $(MASS) --input $(SPLITS_DIR)/test_sig$(MASS).parquet --split test
+	$(PY) -m src.summarize_inference --mass $(MASS)
 
 
 help:
@@ -53,37 +53,37 @@ help:
 # 1) Dataset creation
 data:
 	@echo ">>> make_dataset (CONFIG=$(CONFIG))"
-	$(PY) src/make_dataset.py --config $(CONFIG)
+	$(PY) -m src/make_dataset --config $(CONFIG)
 
 # 2) Prepare ML splits
 splits:
 	@echo ">>> prepare_ml (write splits)"
-	$(PY) src/prepare_ml.py --write-splits
+	$(PY) -m src/prepare_ml --write-splits
 
 # 3) Train BDT
 train:
 	@echo ">>> train_bdt (MASS=$(MASS))"
-	$(PY) src/train_bdt.py --mass $(MASS)
+	$(PY) -m src/train_bdt --mass $(MASS)
 
 # 4) Feature ablation
 ablation:
 	@echo ">>> feature_ablation (drop1)"
-	$(PY) src/feature_ablation.py --mass $(MASS) --mode drop1
+	$(PY) -m src/feature_ablation --mass $(MASS) --mode drop1
 
 # 5) Optimal feature selection
 optimal:
 	@echo ">>> run_optimal_ablation"
-	$(PY) src/run_optimal_ablation.py --mass $(MASS)
+	$(PY) -m src/run_optimal_ablation --mass $(MASS)
 
 # 6) Freeze final model
 freeze:
 	@echo ">>> freeze_final to latest verion"
-	$(PY) src/freeze_final.py --mass $(MASS)
+	$(PY) -m src/freeze_final --mass $(MASS)
 
 # 7) Inference
 infer:
 	@echo ">>> predict (test split)"
-	$(PY) src/predict.py \
+	$(PY) -m src/predict \
 		--mass $(MASS) \
 		--input $(SPLITS_DIR)/test_sig$(MASS).parquet \
 		--split test
@@ -91,7 +91,7 @@ infer:
 # 8) Summarize inference
 summarize:
 	@echo ">>> summarize_inference"
-	$(PY) src/summarize_inference.py --mass $(MASS)
+	$(PY) -m src/summarize_inference --mass $(MASS)
 
 # =========================
 # Convenience targets
@@ -99,7 +99,7 @@ summarize:
 
 plots:
 	@echo ">>> plot_bdt_diagnostics"
-	$(PY) src/plot_bdt_diagnostics.py --mass $(MASS) --modeldir $(MODEL_DIR)
+	$(PY) -m src/plot_bdt_diagnostics --mass $(MASS) --modeldir $(MODEL_DIR)
 
 ci:
 	@echo ">>> CI quick run on sampledata"
@@ -107,8 +107,9 @@ ci:
 
 clean:
 	@echo ">>> Cleaning outputs ((keeping final releases))"
-	rm -rf ml_outputs root_outputs $(MODEL_DIR) $(WORK_DIR) ml_ablation
+	rm -rf ml_outputs root_outputs $(MODEL_DIR) $(WORK_DIR) ml_ablation || true
 
 clean-all:
 	@echo ">>> Cleaning outputs ((keeping final releases))"
-	rm -rf ml_outputs root_outputs ml_models ml_ablation
+	rm -rf ml_outputs root_outputs ml_models ml_ablation || true
+
