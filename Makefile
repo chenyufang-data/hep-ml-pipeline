@@ -25,8 +25,10 @@ smoke: clean
 	$(PY) -m src.make_dataset --config $(CONFIG)
 	$(PY) -m src.prepare_ml --write-splits
 	$(PY) -m src.train_bdt --mass $(MASS)
-	$(PY) -m src.predict --mass $(MASS) --input $(SPLITS_DIR)/test_sig$(MASS).parquet --split test
-	$(PY) -m src.summarize_inference --mass $(MASS)
+	@echo ">>> predict (use working model dir: $(MODEL_DIR))"
+	$(PY) -m src.predict --model-dir ml_models --mass $(MASS) --input $(SPLITS_DIR)/test_sig$(MASS).parquet --split test
+	@echo ">>> summarize (use working model dir: $(MODEL_DIR))"
+	$(PY) -m src.summarize_inference --model-dir ml_models --mass $(MASS)
 
 
 help:
@@ -112,4 +114,5 @@ clean:
 clean-all:
 	@echo ">>> Cleaning outputs ((keeping final releases))"
 	rm -rf ml_outputs root_outputs ml_models ml_ablation || true
+
 
